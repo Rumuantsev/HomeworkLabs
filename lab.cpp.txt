@@ -1,0 +1,63 @@
+#include <stdio.h>
+#include <iostream>
+#include <fstream>
+#include <string>
+
+using namespace std;
+
+//string strFile = "abcfghfabdhfyhabfhyrkoabrtyugab";
+struct FileSymbols {
+    string fileSymbol;
+};
+
+FileSymbols FileString[100];
+
+int countSymbol(string sym, int len) {
+    int count = 0;
+    for (int i = 0; i < len; ++i) {
+        if (FileString[i].fileSymbol == sym) {
+            ++count;
+        }
+    }
+    return count;
+}
+
+int countTwoSymbol(string twoSym, int len) {
+    int count = 0;
+    for (int i = 0; i < len - 1; ++i) {
+        if ((FileString[i].fileSymbol + FileString[i + 1].fileSymbol) == twoSym) {
+            ++count;
+        }
+    }
+    return count;
+}
+
+int main() {
+    fstream file;
+    file.open("text.txt");
+    
+    int len = 0;
+    
+    while (!file.eof()) {
+      file.get();
+      ++len;
+    }
+    
+    len = len - 1;
+    
+    for (int i = 0; i < len; ++i) { 
+        file >> FileString[i].fileSymbol;
+    }
+    
+    string symbol;
+    cout << "Введите букву: "; cin >> symbol;
+    cout << "Частота повторений буквы " << symbol << ": " << countSymbol(symbol, len) << endl;
+    cout << endl;
+    string twoSymbol;
+    cout << "Введите двухбкувенное сочетание: "; cin >> twoSymbol;
+    cout << "Частота повторений двухбуквенного сочетания " << twoSymbol << ": " << countTwoSymbol(twoSymbol, len) << endl;
+    
+    file.close();
+    return 0;
+}
+
